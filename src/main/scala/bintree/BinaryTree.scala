@@ -132,15 +132,27 @@ object BinaryTree:
   // Define map3 but now for state actions
 
   //State[S, +A] = S => (A, S)
+
+  //opaque type State[S, +A] = S => (A, S)
+
   def map3[S, A, B, C, D](sa: State[S, A], sb: State[S, B], sc: State[S, C])(
       f: (A, B, C) => D
   ): State[S, D] = 
-    (s: S) => 
-      val (a: A, s1: S) = sa(s)
-      val (b: B, s2: S) = sb(s1)
-      val (c: C, s3: S) = sc(s2)
+    State {(s: S) => 
+      val (a: A, s1: S) = sa.run(s)
+      val (b: B, s2: S) = sb.run(s1)
+      val (c: C, s3: S) = sc.run(s2)
       (f(a, b, c), s3)
-    
+    }
+
+  def map3ViaApply[S, A, B, C, D](sa: State[S, A], sb: State[S, B], sc: State[S, C])(f: (A, B, C) => D): State[S, D] =
+    State.apply {
+      (s: S) => 
+      val (a: A, s1: S) = sa.run(s)
+      val (b: B, s2: S) = sb.run(s1)
+      val (c: C, s3: S) = sc.run(s2)
+      (f(a, b, c), s3)
+    }
     
 
   // And now define traverse for functions which, at each element of the tree create an action that depends on it.
@@ -150,13 +162,7 @@ object BinaryTree:
   // But the implementation is as simple as before.
   // Hint: Follow the types !!!!
 
-  def traverse[S, A, B](bt: BinaryTree[A])(
-      f: A => State[S, B]
-  ): State[S, BinaryTree[B]] = s => (Empty, s)//S => (BinaryTree[B], S)
-    
-    /*
-    (s: S) =>
-      bt.fold(unit(Empty)){
-        (l, v: A, r) => map3(l, f(v), r)(Branch(_, _, _))
-      }
-*/
+  def traverse[S, A, B](bt: BinaryTree[A])(f: A => State[S, B]): State[S, BinaryTree[B]] =
+      bt.fold(State.apply((s: S) => (Empty: BinaryTree[B], s: S)))
+              ((l: State[S, BinaryTree[B]], v: A, r: State[S, BinaryTree[B]]) => 
+                map3(l, f(v), r)(Branch(_, _, _))) 

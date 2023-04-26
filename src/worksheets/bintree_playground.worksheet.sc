@@ -1,6 +1,8 @@
-import bintree.*
-import BinaryTree.*
-import state.State
+//import bintree.*
+//import BinaryTree.*
+//import state.State
+/*
+import bintree.* 
 
 val tree = Branch(Empty, 42, Empty)
 
@@ -43,7 +45,4 @@ val s2 = State[Int, Int](s => (s + 2, s + 2))
 val s3 = State[Int, Int](s => (s / 2, s - 3))
 val combined = map3(s1, s2, s3)
 
-def push(n: Int): State[List[Int], Int] =
-      State(ns => (n, n :: ns))
-
-1 + 2 + 3
+*/

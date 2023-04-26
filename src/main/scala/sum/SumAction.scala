@@ -29,10 +29,16 @@ def accumulateActionViaModify(n: Int): State[Int, Unit] = //S => ((), Int)
 // Implement a method that sums the elements of a list (which are integers)
 // - use the accumulateAction
 // - use State.traverse over the list
-def sumList(ints: List[Int]): Int = 0
-  //State.traverse(ints)(accumulateAction(0))
+
+//State[S, +A] = S => (A, S)
+def sumList(ints: List[Int]): Int = 
+  val result: State[Int, List[Unit]] = State.traverse(ints)(accumulateAction(_))
+  val (_, s) = result.run(0)
+  s
 
 // Using the same ideas as before, implement a method that sums the elements of a tree
 // Use the implementation of BinaryTree.traverse that you have defined
 def sumTree(bt: BinaryTree[Int]): Int =
-  ???
+  val result = BinaryTree.traverse(bt)(accumulateAction(_))
+  val (_, s: Int) = result.run(0)
+  s
