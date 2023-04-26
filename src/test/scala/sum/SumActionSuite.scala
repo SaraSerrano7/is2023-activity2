@@ -5,12 +5,12 @@ import munit.FunSuite
 class SumActionSuite extends FunSuite {
 
   test("sumAction") {
-    val action = accumulateAction(2)
-    //val action2 = accumulateActionViaFor(2)
-    //val action3 = accumulateActionViaModify(2)
-    assertEquals(action.run(3), ((), 5))
-    //assertEquals(action2.run(3), ((), 5))
-    //assertEquals(action3.run(3), ((), 5))
+    val action1 = accumulateAction(2)
+    assertEquals(action1.run(3), ((), 5))
+    val action2 = accumulateActionViaFor(5)
+    assertEquals(action2.run(0), ((), 5))
+    val action3 = accumulateActionViaModify(1)
+    assertEquals(action3.run(1), ((), 2))
   }
 
   test("sumList") {

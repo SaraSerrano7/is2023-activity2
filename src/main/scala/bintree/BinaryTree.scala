@@ -49,7 +49,7 @@ object BinaryTree:
   //   which transforms each element can fail. If any of the transformations fails, the transformation
   //   of the whole tree fails as well.
   // - Hint: read the solution of the midterm for inspiration
-  def traverse[A, B](bt: BinaryTree[A])(f: A => Option[B]): Option[BinaryTree[B]] =
+  def traverseOption[A, B](bt: BinaryTree[A])(f: A => Option[B]): Option[BinaryTree[B]] =
     bt.fold(Some(Empty))((l: Option[BinaryTree[B]], v: A, r: Option[BinaryTree[B]]) => {
       map3ViaMatch(l, f(v), r)(Branch(_, _, _))
     })
@@ -162,7 +162,7 @@ object BinaryTree:
   // But the implementation is as simple as before.
   // Hint: Follow the types !!!!
 
-  def traverse[S, A, B](bt: BinaryTree[A])(f: A => State[S, B]): State[S, BinaryTree[B]] =
+  def traverseState[S, A, B](bt: BinaryTree[A])(f: A => State[S, B]): State[S, BinaryTree[B]] =
       bt.fold(State.apply((s: S) => (Empty: BinaryTree[B], s: S)))
               ((l: State[S, BinaryTree[B]], v: A, r: State[S, BinaryTree[B]]) => 
                 map3(l, f(v), r)(Branch(_, _, _))) 

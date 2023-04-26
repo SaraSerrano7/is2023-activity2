@@ -38,7 +38,8 @@ def sumList(ints: List[Int]): Int =
 
 // Using the same ideas as before, implement a method that sums the elements of a tree
 // Use the implementation of BinaryTree.traverse that you have defined
-def sumTree(bt: BinaryTree[Int]): Int =
-  val result = BinaryTree.traverse(bt)(accumulateAction(_))
+def sumTree(bt: BinaryTree[Int]): Int = 
+  val result = BinaryTree.traverseState(bt)(accumulateAction(_))
   val (_, s: Int) = result.run(0)
   s
+  

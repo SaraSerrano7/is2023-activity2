@@ -20,9 +20,9 @@ class BinaryTreeSuite extends FunSuite {
 
   test("traverse-option") {
     val tree = Branch(Branch(Empty, 1, Empty), 2, Branch(Empty, 3, Empty))
-    assertEquals(traverse(tree)(Some.apply), Some(tree))
+    assertEquals(traverseOption(tree)(Some.apply), Some(tree))
     def onlyEven(n: Int) = Some(n).filter(_ % 2 == 0)
-    assertEquals(traverse(tree)(onlyEven), None)
+    assertEquals(traverseOption(tree)(onlyEven), None)
   }
 
   test("map2-list") {
@@ -61,6 +61,6 @@ class BinaryTreeSuite extends FunSuite {
     val tree = Branch(Branch(Empty, 1, Empty), 2, Branch(Empty, 3, Empty))
     def push(n: Int): State[List[Int], Int] =
       State(ns => (n, n :: ns))
-    assertEquals(traverse(tree)(push).run(Nil), (tree, List(3, 2, 1)))
+    assertEquals(traverseState(tree)(push).run(Nil), (tree, List(3, 2, 1)))
   }
 }
