@@ -20,7 +20,9 @@ object LazyHondt {
   // We'll tag each quotient with the party
   // Hint: Follow the types and map is your friend
   def partyQuotients(party: String, numVotes: Int): LazyList[(String, Double)] =
-    ???
+    val infiniteDenominators = LazyList.from(1)
+    val infiniteQuotients = infiniteDenominators.map(quotient(numVotes, _))
+    infiniteQuotients.map((party, _))
 
   // Here comes the most difficult method you have to create
   // All the LazyList contains pairs with the name of a party and a quotient.
@@ -42,7 +44,19 @@ object LazyHondt {
       left: LazyList[(String, Double)],
       right: LazyList[(String, Double)]
   ): LazyList[(String, Double)] =
-    ???
+    (left, right) match
+      case (Empty, _) => right
+      case (_, Empty) => left
+      case (Cons(h1, t1), Cons(h2, t2)) => 
+        val firstLeft = h1()
+        val firstRight = h2()
+        if firstLeft._2 < firstRight._2 then cons(firstLeft, merge(t1(), right)) 
+                                        else cons(firstRight, merge(left, t2()))
+
+        //val firstLeft: List[(String, Double)] = left.take(1).toList
+        //val firstRight: List[(String, Double)] = right.take(1).toList
+        //LazyList.
+    
 
   // Now we can create the hondt function. The parameters are:
   // votes: The votes of each party in a Map
@@ -57,8 +71,9 @@ object LazyHondt {
     // https://www.scala-lang.org/api/3.1.2/scala/collection/Map.html
     // And we can transform the elements inside the iterator
     // https://www.scala-lang.org/api/3.1.2/scala/collection/Iterator.html
-    val quotients: Iterator[LazyList[(String, Double)]] =
-      ???
+    val quotients: Iterator[LazyList[(String, Double)]] = 
+      votes.iterator.map(partyQuotients(_, _))
+      
 
     println("pre-merge")
 
@@ -74,7 +89,7 @@ object LazyHondt {
     // One we have a single (and ordered) LazyList will all the tagged-quotients we only
     // have to select the first n
     val selectedQuotients: LazyList[(String, Double)] =
-      ???
+      orderedQuotients.take(n)
 
     println("start counting ...")
 
@@ -82,7 +97,7 @@ object LazyHondt {
     // previous activity) count the results.
 
     val result: Map[String, Int] =
-      ???
+      selectedQuotients.toList.toMap
 
     print("done counting ...")
 
