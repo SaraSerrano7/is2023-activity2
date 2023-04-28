@@ -50,7 +50,7 @@ object LazyHondt {
       case (Cons(h1, t1), Cons(h2, t2)) => 
         val firstLeft = h1()
         val firstRight = h2()
-        if firstLeft._2 < firstRight._2 then cons(firstLeft, merge(t1(), right)) 
+        if firstLeft._2 > firstRight._2 then cons(firstLeft, merge(t1(), right)) 
                                         else cons(firstRight, merge(left, t2()))
 
         //val firstLeft: List[(String, Double)] = left.take(1).toList
@@ -82,7 +82,7 @@ object LazyHondt {
     // https://www.scala-lang.org/api/3.1.2/scala/collection/IterableOnceOps.html
     // Hint: combining all by combining pairs seems a task for a fold, isn't it?
     val orderedQuotients: LazyList[(String, Double)] =
-      ???
+      quotients.fold(Empty)(merge)
 
     println("pre-take")
 
@@ -96,8 +96,8 @@ object LazyHondt {
     // And then converting the LazyList to a List and then (using the same idea that in the
     // previous activity) count the results.
 
-    val result: Map[String, Int] =
-      selectedQuotients.toList.toMap
+    val result: Map[String, Int] = 
+      selectedQuotients.toList.groupMapReduce((party, _) => party)(_ => 1)(_ + _)
 
     print("done counting ...")
 
