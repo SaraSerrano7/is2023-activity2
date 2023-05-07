@@ -90,13 +90,6 @@ object BinaryTree:
     }
     
   // Apply the same idea to a map3
-  def map3ViaMatch2[A, B, C, D](as: List[A], bs: List[B], cs: List[C])(f: (A, B, C) => D): List[D] = ???
-  /*
-    (as, bs, cs) match
-      case (a::aas, b::bbs, c::ccs) => f(a, b, c) :: map3ViaMatch2(aas, bbs, ccs)(f)
-      case _ => List[D]()
-    */
-
   def map3ViaFor2[A, B, C, D](as: List[A], bs: List[B], cs: List[C])(f: (A, B, C) => D): List[D] = 
     for {
       a <- as
@@ -124,7 +117,6 @@ object BinaryTree:
       (l: List[BinaryTree[B]], v: A, r: List[BinaryTree[B]]) => map3ViaFor2(l, f(v), r)(Branch(_, _, _))
     }
 
-  // State
   import state.State
   import State.*
 
@@ -132,8 +124,6 @@ object BinaryTree:
   // Define map3 but now for state actions
 
   //State[S, +A] = S => (A, S)
-
-  //opaque type State[S, +A] = S => (A, S)
 
   def map3[S, A, B, C, D](sa: State[S, A], sb: State[S, B], sc: State[S, C])(
       f: (A, B, C) => D

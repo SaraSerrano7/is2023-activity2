@@ -53,11 +53,6 @@ object LazyHondt {
         if firstLeft._2 > firstRight._2 then cons(firstLeft, merge(t1(), right)) 
                                         else cons(firstRight, merge(left, t2()))
 
-        //val firstLeft: List[(String, Double)] = left.take(1).toList
-        //val firstRight: List[(String, Double)] = right.take(1).toList
-        //LazyList.
-    
-
   // Now we can create the hondt function. The parameters are:
   // votes: The votes of each party in a Map
   // n: the number of sites to elect

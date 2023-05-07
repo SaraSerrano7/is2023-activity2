@@ -4,8 +4,6 @@ import state.State
 
 def multByN(n: Int): State[Int, Unit] = 
   State.apply{
-    // State[S, A] = S => (A, S)
-    // State[Int, Unit]
     (n2: Int) =>
       if n * n2 == 0 then ((), 1) else 
       ((), n * n2)
